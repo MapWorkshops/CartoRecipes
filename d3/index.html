@@ -1,0 +1,124 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>CartoDB-D3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+
+    <style>
+        body{
+            background:white;
+        }
+        svg {
+          width: 960px;
+          height: 500px;
+          background: none;
+        }
+        svg:active {
+          cursor: move;
+          cursor: -moz-grabbing;
+          cursor: -webkit-grabbing;
+        }
+        .globe {
+          fill: #ccc;
+          fill-opacity: 1;
+          stroke: #111;
+          stroke-width:1px;
+        }
+        #first_layer path {
+          stroke: #333;
+          stroke-linecap: round;
+          stroke-linejoin: round;
+        }
+
+        textarea{
+          width: 960px;
+          font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <!--[if lt IE 8]>
+        <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div id="map"></div>
+    <div id="text">
+        <textarea name="" id="svg" cols="30" rows="10"></textarea>
+    </div>
+    <!-- include cartodb.js library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3-geo-projection/0.2.9/d3.geo.projection.min.js"></script>
+    <script>
+        var width = 960; height = 500;
+        $( document ).ready(function(){
+            var sqlStm = "";
+            // Define our SVG element outside our SQL functions
+            var svg = d3.select("#map")
+                  .append("svg")
+                  .call(d3.behavior.zoom()
+                      .on("zoom", redraw))
+                  .append("g");
+
+            // Define the color scale for our choropleth
+            var fill = d3.scale.linear()
+              .domain([0, 9])
+              .range([1,2,3,4,5,6,7,8,9,10].map(d3.scale.category10()));
+
+            // Our projection.
+            var xy = d3.geo.albers()
+            .center([2, 46.5])
+            .rotate([0, 0])
+            .parallels([40, 51])
+            .scale(2800)
+            .translate([width / 2, height / 2]);
+
+            // Our path
+            var path = d3.geo.path().projection(xy);
+
+            // Add our first layer
+            svg.append("g").attr("id", "first_layer");
+
+            // Use D3 AJAX method to query CartoDB table
+            var sqlStm = "select floor(((population - 78476) * 9)  / 6411205) as population, ST_Simplify(the_geom,0.01) as the_geom from spain_adm2";
+
+            d3.json("http://libregis.cartodb.com/api/v2/sql?q=" + sqlStm + "&format=geojson&dp=5", function(collection) {
+                svg.select("#first_layer")
+                  .selectAll("path")
+                    .data(collection.features)
+                  .enter().append("path")
+                  .attr("fill", function(d) {
+                    return fill(d.properties.population);
+                   })
+                  .attr("stroke-width", "0.5px")
+                  .attr("fill-opacity", "0.7")
+                  .attr("stroke","#333")
+                  .attr("d", path.projection(xy));
+
+                updateSVG();
+            });
+
+            // Handles our zoom
+            function redraw() {
+            svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+            $('#svg').text();
+            }
+
+            function updateSVG(){
+                $('#svg').text(
+                    '<?xml version="1.0" standalone="no"?>\r\n' +
+                    '<svg viewBox="0 0 ' + width + ' ' + height + '"' +
+                    ' xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">\r\n' +
+                    $('svg').html() +
+                    '\r\n</svg>'
+                );
+            }
+        });
+    </script>
+</body>
+</html>
