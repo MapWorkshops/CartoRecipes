@@ -1,0 +1,172 @@
+body { margin: 0; padding: 0; }
+/* Header */
+.header {
+    position: absolute;
+    padding: 40px;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    background: -moz-linear-gradient(top, rgba(245,245,243,1) 0%, rgba(245,245,243,0) 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(245,245,243,1)), color-stop(100%,rgba(245,245,243,0))); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(245,245,243,1) 0%,rgba(245,245,243,0) 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(245,245,243,1) 0%,rgba(245,245,243,0) 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(245,245,243,1) 0%,rgba(245,245,243,0) 100%); /* IE10+ */
+    background: linear-gradient(to bottom, rgba(245,245,243,1) 0%,rgba(245,245,243,0) 100%); /* W3C */
+}
+
+    h1 { font-family: 'Arvo', Georgia, Times, serif; font-size: 40px; line-height: 40px; margin: 0; color: #48483A;}
+    h2 { font-family: 'PT Sans', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 300; line-height:26px; width: 600px; margin-top: 12px; color: #74776B;  }
+
+    /* custom controls */
+    div.cartodb-zoom { position: absolute; top: 160px; left: 20px; }
+    div.cartodb-timeslider { left: 40px !important; bottom: 0 !important; }
+    /*div.cartodb-timeslider ul li.time { display: none; }*/
+    div.cartodb-legend-stack { right: 40px; }
+
+    .leaflet-draw.leaflet-control { position: absolute; top: 249px; left: 30px; }
+    .leaflet-draw-toolbar.leaflet-bar.leaflet-draw-toolbar-top { border: 1px solid #999; box-shadow: rgba(0,0,0,.2) 0 0 4px 2px; background: #FFF; }
+    .leaflet-draw-toolbar.leaflet-draw-draw-polygon { background-position: -30px -1px; }
+    .leaflet-draw-toolbar .leaflet-draw-draw-rectangle { background-position: -61px -1px; }
+    .leaflet-bar a, .leaflet-bar a:hover { width: 28px; height: 28px; background-color: #fff; }
+    .leaflet-bar a { opacity: .8; }
+    .leaflet-bar a:hover { opacity: 1; }
+
+
+.leaflet-top.leaflet-right { top: 40px; right: 40px; }
+
+
+.leaflet-draw-tooltip-subtext {
+    color: #fff;
+    font-weight: bold;
+    font-size: 14px;
+}
+.leaflet-draw-tooltip {
+    background: rgb(54, 54, 54);
+    background: rgba(0, 0, 0, 0.8);
+}
+.leaflet-draw-tooltip:before {
+    border-right-color: rgb(54, 54, 54);
+    border-right-color: rgba(0, 0, 0, 0.8);
+}
+
+
+.leaflet-top.leaflet-control { margin-top: 0; }
+.leaflet-right.leaflet-control { margin-right: 0; }
+
+/* legend */
+.info {
+    margin: 0px;
+    padding: 20px;
+    color: #FFF;
+    background: #74776B;
+    font-size: 14px;
+    line-height: 21px;
+    color: #B7C8B5;
+    font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+    min-width: 280px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+    border-radius: 4px;
+}
+    .info.leaflet-control { margin: 0; }
+    .info h4 { font-size: 15px; line-height: 20px; color: #FFF; margin: 0; }
+
+    .info table {
+        bottom: 30px;
+        font: 14px/16px Arial, Helvetica, sans-serif;
+        background: white;
+        background: rgba(255,255,255,0.8);
+        box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        border-radius: 5px;
+    }
+    .info span.bus { position: absolute; bottom: 14px; right: 20px; text-transform: uppercase; font-size: 11px; color: #FFF; }
+    .info span.amount { position: absolute; bottom: 38px;  right: 20px; text-transform: uppercase; font-size: 11px; color: #B7C8B5; }
+    
+
+
+
+
+a.leaflet-draw-edit-edit { display: none; }
+.leaflet-draw-toolbar .leaflet-draw-edit-edit.leaflet-disabled { display: none; }
+
+
+.leaflet-draw-inner-toolbar {
+    background: none repeat scroll 0 0 rgba(255, 255, 255, 0.6);
+    bottom: 0;
+    display: none;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+
+/* Graph */
+.graph { margin: 40px 0 16px; }
+    .graph-lst {
+      list-style-type: none;
+      border-bottom: 1px solid rgba(255, 255, 255, .2);
+      padding: 0 20px 0 0;
+      font-family: 'PT Sans';
+    }
+    .graph-lst li {
+      display: inline-block;
+      vertical-align: bottom;
+      width: 20px;
+      margin-left: 12px;
+      background: #B7C8B5;
+      position: relative;
+    }
+    .graph-lst li:first-child {
+      margin-left: 0;
+    }
+    .graph-figure {
+      font-size: 12px;
+      font-weight: 200;
+      position: absolute;
+      top: -22px;
+      color: #B7C8B5;
+      font-weight: bold;
+      width: 20px;
+      text-align: center; 
+    }
+    .graph-provider {
+      font-size: 12px;
+      position: absolute;
+      bottom: -22px;
+      color: #fff;
+      font-weight: regular;
+      width: 20px;
+      text-align: center;
+    }
+
+    .leaflet-bar a:last-child {
+      border-bottom: 0;
+      border-radius: 4px;
+      width: 28px;
+      height: 28px;
+    }
+
+    .leaflet-bar {
+      width: 28px;
+    }
+
+    .leaflet-draw-toolbar .leaflet-draw-edit-remove {
+      background-position: -181px -1px;
+    }
+
+    .leaflet-draw-toolbar .leaflet-draw-edit-remove.leaflet-disabled {
+      background-position: -241px -1px;
+    }
+
+    .leaflet-draw.leaflet-control {
+      top: 237px;
+    }
+
+    .leaflet-top .leaflet-control {
+      margin-top: 0;
+    }
+
+    .leaflet-draw-toolbar {
+      margin-top: 20px;
+    }
