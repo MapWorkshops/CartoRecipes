@@ -13,9 +13,9 @@ function updateTorqueLayer(torqueLayer, pol_pgis){
 // Update the info window with data from CartoDB
 function updateInfoWindow(info, pol_pgis) {
 
-    var sql = new cartodb.SQL({user: 'jorgearevalo'});
+    var sql = new cartodb.SQL({user: 'libregis'});
 
-    sql.execute("with pol as (" + pol_pgis + ") SELECT providerid, count(distinct vehicleid) as number_of_vehicles, '2014-10-08' as start_date, '2014-10-08' as end_date, '15:30' as start_time, '17:30 PM' as end_time FROM busrestrictedzone a, pol b where a.the_geom && b.the_geom and timestamplocal between '2014-10-08T15:30:40+02:00' and '2014-10-08T17:30:32+02:00' group by providerid")
+    sql.execute("with pol as (" + pol_pgis + ")  select a.* from tracking_eric a, pol b where st_contains(b.the_geom, a.the_geom)")
 
     .done(function(data) {
         console.log(data.rows);
@@ -36,19 +36,26 @@ function buildInfoWindowContent(data) {
     }
 
 
-    var htmlDiv = "<div class='graph' style='right: 400px; top: 400px;'><div class='graph-inner'><ul class='graph-lst'>";
+    var htmlDiv = "<div class='graph' style='right: 400px; top: 400px;'><div class='graph-inner'>";
+
+    var speed = 0;
+    var time = 0;
+    var distance = 0;
 
     for(var i=0; i < data.length; i++) {
+      if (data[i].distance_in_meters != null)
+        distance = distance + data[i].distance_in_meters;
 
-        var h = parseInt(data[i].number_of_vehicles) * 3;
-
-        htmlDiv += "<li style='height: " + h + "px'>";
-        htmlDiv += "<span class='graph-figure'>" + data[i].number_of_vehicles + "</span>";
-        htmlDiv += "<span class='graph-provider'>" + data[i].providerid + "</span>";
-        htmlDiv += "</li>";
+      if (data[i].duration_in_seconds != null)
+        time = time + data[i].duration_in_seconds;
     }
 
-    htmlDiv += "</ul><span class='bus'>bus line</span> <span class='amount'>amount</span></div></div>";
+    speed = distance / time;
+
+    htmlDiv += "<span class='graph-figure'>" + distance + " m</span>";
+    htmlDiv += "<span class='graph-provider'>" + speed + " m/s </span>";
+
+    htmlDiv += "<span class='bus'>Total distance</span> <span class='amount'>Avg Speed</span></div></div>";
 
     console.log('Data: ' + data);
 
@@ -117,7 +124,7 @@ function adaptViewToPol(e, drawnItems, map, info, torqueLayer) {
     map.fitBounds(bounds);
 
     // Update the content of the info window
-    //updateInfoWindow(info, pol_pgis);
+    updateInfoWindow(info, pol_pgis);
 
     drawnItems.addLayer(layer);
 
@@ -196,7 +203,7 @@ function main() {
 
             // method that we will use to update the control based on feature properties passed
             info.update = function (data) {
-                this._div.innerHTML = '<h4>Number of buses since 15:30 to 17:30</h4>' +  (data ?
+                this._div.innerHTML = '<h4>Speed and distance</h4>' +  (data ?
                     buildInfoWindowContent(data)
                     : 'Draw a polygon or a rectangle to select a zone');
             };
