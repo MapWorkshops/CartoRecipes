@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>#ConnectionDay 2014</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+    <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+    <style>
+      html, body, #map {
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      .bravos { position: relative;
+            width: 350px;
+            background-color: white;
+
+        }
+
+        .cartodb-popup-close-button {
+            position: absolute;
+            top: -3px;
+            right: -11px;
+            width: 26px;
+            height: 26px;
+            background: url('http://libs.cartodb.com/cartodb.js/v3/themes/img/light.png') no-repeat 0 -23px;
+            text-indent: -9999px;
+            font-size: 0;
+            line-height: 0;
+            opacity: 1;
+            text-transform: uppercase;
+            z-index: 3;
+          }
+
+          .cartodb-popup-tip-container {
+            position: absolute;
+            bottom: -3px;
+            left: 23px;
+            width: 16px;
+            height: 14px;
+            background: url('http://libs.cartodb.com/cartodb.js/v3/themes/img/light.png') no-repeat -23px -7px;
+            text-indent: -9999px;
+            font-size: 0;
+            line-height: 0;
+            opacity: 1;
+            z-index: 3;
+          }
+
+          blockquote {
+            display: hidden;
+          }
+
+          .cartodb-popup-content {
+            min-height: 80px;
+          }
+    </style>
+
+    <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+
+  </head>
+  <body>
+    <div id="map"></div>
+    <div id="torque-time"></div>
+
+
+    <script type="infowindow/html" id="infowindow_template">
+        <div class="bravos" id="tweet">
+          <a href="#close" class="cartodb-popup-close-button close">x</a>
+          <div class="cartodb-popup-content">
+            <%= insert_tw(content) %>
+          </div>
+          <div class="cartodb-popup-tip-container"></div>
+        </div>
+    </script>
+
+    <!-- include cartodb.js library -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+    <script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+    <script>
+        var sql = new cartodb.SQL({user: 'libregis'});
+
+       // helper to include tweet html
+        function insert_tw(content) {
+              var twitter_id = content.data.twitter_id
+              return "<div id='tweet_embed'></div><script>twttr.widgets.createTweet('" + twitter_id  + "', document.getElementById('tweet_embed'))</sc" + "ript>";
+        }
+
+        function main() {
+          //cartodb.createVis('map', 'https://libregis.cartodb.com/api/v2/viz/aa3f3da8-800f-11e5-bb50-0ef7f98ade21/viz.json', {
+          cartodb.createVis('map', 'https://libregis.cartodb.com/api/v2/viz/f30c793c-8551-11e5-a92b-0ef24382571b/viz.json', {
+            tiles_loader: true  // loader below the zoom control, that shows that the tiles are being loaded
+          })
+
+          .done(function(vis, layers) {
+              /**
+               * layer[0]: Base layer
+               * layer[1]: Layer group with 1 static sublayer containing all the tweets, to allow clicking on them:
+               * layer[2]: Torque layer with all the tweets
+               **/
+
+              // Twitter-like infowindow for the tweets static layer
+              var staticLayer = layers[1].getSubLayer(0);
+
+              var infowindow = staticLayer.infowindow;
+              infowindow.set('template_type', 'underscore');
+              infowindow.set('template', $('#infowindow_template').html());
+
+
+              var torqueLayer = layers[2];
+              var tt;
+
+              torqueLayer.stop();
+
+              // Play animation after loading all the torque tiles, but just the first time (after page load)
+              // So, we prevent the animation to start when double click, if the animation is stopped
+              torqueLayer.on('load', function _c() {
+                  torqueLayer.play();
+                  torqueLayer.off('load', _c);
+              });
+          })
+
+          .error(function(err) {
+              console.log(err);
+          });
+
+
+      }
+      window.onload = main;
+    </script>
+
+  </body>
+</html>
