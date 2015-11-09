@@ -16,36 +16,36 @@ in a Google Drive sheet named IFTTT/Foursquare check-ins
 
 * Transform the date string into a real date: TODO query
 * The most important thing, a trigger to update the geometry column after insert/update:
+
 ```sql
 CREATE OR REPLACE FUNCTION update_geom_column()
-  RETURNS trigger AS
+RETURNS trigger AS
 $BODY$
-   BEGIN
-      with coords_str_table as (
-        select cartodb_id, regexp_matches(map_url, 'center=(-?[\d]*\.[\d]*),(-?[\d]*\.[\d]*)&') as coords
-        from foursquare_checkins
-      ),
-      coords_table as (
-        select cartodb_id, coords[1]::numeric as lat, coords[2]::numeric as lng from coords_str_table
-      )
-      update foursquare_checkins set the_geom=CDB_LatLng(lat, lng) from coords_table
-      where coords_table.cartodb_id = NEW.cartodb_id
+DECLARE
+  coords_array varchar[] := ARRAY[2];
+BEGIN
+  if new.map_url is null then
+    raise exception 'map_url cannot be null';
+  end if;
 
-   -- The return value is ignored for row-level triggers fired after an operation, and so they can return NULL.
-      return null;
-    END;
+  -- Get coords using regexp_matches
+  select regexp_matches(NEW.map_url, 'center=(-?[\d]*\.[\d]*),(-?[\d]*\.[\d]*)&') into coords_array;
+  NEW.the_geom = CDB_LatLng(coords_array[1]::numeric, coords_array[2]::numeric);
+
+  return NEW;
+END;
 $BODY$
-  LANGUAGE plpgsql VOLATILE
-  COST 100;
+LANGUAGE plpgsql VOLATILE
+COST 100;
 
-CREATE OR UPDATE TRIGGER update_geom_column_trigger
-AFTER INSERT OR UPDATE OR DELETE
+drop trigger if exists update_geom_column_trigger on foursquare_checkins;
+CREATE TRIGGER update_geom_column_trigger
+BEFORE INSERT OR UPDATE
 ON foursquare_checkins
 FOR EACH ROW
 EXECUTE PROCEDURE update_geom_column();
-
 ```
 
-So, every time the IFTTT recipe adds a new file to the Google Drive sheet, this file will be included
-in the next synchronization (depending on the period you chose, this will happen every hour, every day...).
-And every time the table is synchronized, the_geom field will be updated. NEED TESTING
+  So, every time the IFTTT recipe adds a new file to the Google Drive sheet, this file will be included
+  in the next synchronization (depending on the period you chose, this will happen every hour, every day...).
+  And every time the table is synchronized, the_geom field will be updated. NEED TESTING
