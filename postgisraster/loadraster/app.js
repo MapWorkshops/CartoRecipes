@@ -3,7 +3,7 @@ function currentUser() {
 }
 
 function currentEndpoint() {
-    return "http://jorgearevalo.cartodb.com/api/v1/map";
+    return "http://libregis.cartodb.com/api/v1/map";
 }
 
 
@@ -13,7 +13,7 @@ function main() {
     var map = new L.Map('map', {
         zoomControl: true,
         drawnControl: true,
-        center: [33.76, -117.45],
+        center: [37.383333, -5.983333],
         zoom: 11
     });
 
@@ -105,7 +105,7 @@ function main() {
 
 
         if (pol_pgis) {
-            q = "SELECT avg((stats).mean) as m from (select st_summarystats(the_raster_webmercator, 1) as stats from jorgearevalo.utm_1 where st_intersects(the_raster_webmercator, " + pol_pgis +")) as foo";
+            q = "SELECT avg((stats).mean) as m from (select st_summarystats(the_raster_webmercator, 1) as stats from foto_pnoa where st_intersects(the_raster_webmercator, " + pol_pgis +")) as foo";
 
             console.log("QUERY: " + q);
 
@@ -136,13 +136,13 @@ function main() {
 
     // Add raster layer
     var config = {
-        "version": "1.2.0",
+        "version": "1.3.1",
         "layers": [
             {
                 "type": "cartodb",
                 "options": {
-                    "sql": "select * from jorgearevalo.utm_1",
-                    "cartocss": "#utm_1 {raster-opacity: 0.5;}",
+                    "sql": "select * from foto_pnoa",
+                    "cartocss": "#foto_pnoa {raster-opacity: 0.5;}",
                     "cartocss_version": "2.3.0",
                     "geom_column": "the_raster_webmercator",
                     "geom_type": "raster"
