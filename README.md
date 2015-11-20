@@ -1,2 +1,1 @@
-# codemotion2015
-A few CartoDB recipes
+ Just a few CartoDB recipes, so far. Planning to add more recipes.
