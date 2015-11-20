@@ -57,7 +57,7 @@ body { margin: 0; padding: 0; }
 /* legend */
 .info {
     margin: 0px;
-    padding: 20px;
+    padding: 9px 20px 30px 20px;
     color: #FFF;
     background: #74776B;
     font-size: 14px;
@@ -81,7 +81,7 @@ body { margin: 0; padding: 0; }
     }
     .info span.bus { position: absolute; bottom: 14px; right: 20px; text-transform: uppercase; font-size: 11px; color: #FFF; }
     .info span.amount { position: absolute; bottom: 38px;  right: 20px; text-transform: uppercase; font-size: 11px; color: #B7C8B5; }
-    
+
 
 
 
@@ -103,40 +103,21 @@ a.leaflet-draw-edit-edit { display: none; }
 
 /* Graph */
 .graph { margin: 40px 0 16px; }
-    .graph-lst {
-      list-style-type: none;
-      border-bottom: 1px solid rgba(255, 255, 255, .2);
-      padding: 0 20px 0 0;
-      font-family: 'PT Sans';
-    }
-    .graph-lst li {
-      display: inline-block;
-      vertical-align: bottom;
-      width: 20px;
-      margin-left: 12px;
-      background: #B7C8B5;
-      position: relative;
-    }
-    .graph-lst li:first-child {
-      margin-left: 0;
-    }
     .graph-figure {
       font-size: 12px;
       font-weight: 200;
       position: absolute;
-      top: -22px;
+      top: 40px;
       color: #B7C8B5;
       font-weight: bold;
-      width: 20px;
-      text-align: center; 
+      text-align: center;
     }
     .graph-provider {
       font-size: 12px;
       position: absolute;
-      bottom: -22px;
+      bottom: 15px;
       color: #fff;
       font-weight: regular;
-      width: 20px;
       text-align: center;
     }
 

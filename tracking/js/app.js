@@ -52,10 +52,10 @@ function buildInfoWindowContent(data) {
 
     speed = distance / time;
 
-    htmlDiv += "<span class='graph-figure'>" + distance + " m</span>";
-    htmlDiv += "<span class='graph-provider'>" + speed + " m/s </span>";
+    htmlDiv += "<span class='graph-figure'>" + parseFloat(distance).toFixed(2) + " m</span>";
+    htmlDiv += "<span class='graph-provider'>" + parseFloat(speed).toFixed(2) + " m/s </span>";
 
-    htmlDiv += "<span class='bus'>Total distance</span> <span class='amount'>Avg Speed</span></div></div>";
+    htmlDiv += "<span class='bus'>Avg. Speed</span> <span class='amount'>Total distance</span></div></div>";
 
     console.log('Data: ' + data);
 
