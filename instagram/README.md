@@ -3,3 +3,5 @@
 3. Run
 
 Basically, I've modified an [existent code](https://github.com/kluivers/instagram-gallery) to add the ability to insert data in CartoDB after rendering it in the web page.
+
+To avoid using api key, we could also check the solution explained in [this CartoDB blog post](http://blog.cartodb.com/read-and-write-to-cartodb-with-the-leaflet-draw-plugin/)
