@@ -217,6 +217,7 @@ Gallery.prototype = {
 
 	finished: function() {
 		var container = document.getElementById(this.containerId);
-		container.classList.add("finished");
+		container.innerHTML = '<p>' + this.postsRendered + ' images added to CartoDB table ' + this.cartodbTableName + '</p>';
+		//container.classList.add("finished");
 	}
 }
