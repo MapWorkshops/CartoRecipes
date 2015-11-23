@@ -1,10 +1,15 @@
+# Zombie outbreak
+
+Simulate virus spreading from origin airport to several destinations
+
+It uses the same data than the *sqlroutes* example.
+
 Inspiration here http://blog.cartodb.com/jets-and-datelines/ and here https://team.cartodb.com/u/jsanz/viz/89f6adfe-48f8-11e5-b416-0e0c41326911/public_map
 
 To create the lines:
 
 ```sql
-SELECT a2.cartodb_id,
- a2.city AS city, r.airline,
+SELECT a2.city AS city, r.airline,
   ST_Transform(
      ST_Segmentize(
          ST_Makeline(
@@ -19,6 +24,7 @@ FROM airports a1
 JOIN routes r ON r.airport_st = a1.code_iata
 JOIN airports a2 ON r.airport_end = a2.code_iata
 WHERE a1.code_iata = 'MAD' AND r.codeshare IS NULL
+LIMIT 1000 OFFSET 0
 ```
 
 To create the balls:
@@ -43,7 +49,7 @@ dests as (
     d.the_geom::geography,
     14000000
   )
-), -- generate lines using the geographic maxmimum circle
+), -- generate lines using the geographic maximum circle
 lines as(
   select
   dests.cartodb_id,  dests.name, dests.city, dests.distance,

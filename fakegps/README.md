@@ -14,7 +14,7 @@ segmentized points. Check [st_segmentize](http://www.postgis.org/docs/ST_Segment
 
 Take into account that it's really important to order the extern query by the field *path*. This field
 represents an index reference enumerating the POINTs of the supplied geometry. On other words: it controls
-the order in which the points are generated. 
+the order in which the points are generated.
 
 The *order by name* is just in the case you have more than one route
 
@@ -26,7 +26,13 @@ with dates as (SELECT row_number() over (order by dt) as id, dt FROM generate_se
 update fake_gps_from_rutas set dt = dates.dt from dates where dates.id = cartodb_id
 ```
 
-*fake_gps_from_rutas* is the name of your table. About the 38539 seconds:
+*fake_gps_from_rutas* is the name of your table. And we're using [PostgreSQL window functions](http://www.postgresql.org/docs/9.1/static/tutorial-window.html) to generate an id for each generated date in the [CTE query](http://www.postgresql.org/docs/9.1/static/queries-with.html). Another way to generate this id would simply be:
+
+```sql
+SELECT generate_series(1, 4214) as id
+```
+
+About the 41214 seconds:
 
 We want one point each 5 seconds (totally random decision). And the number of elements
 on the table is 8243. So, 8243 * 5 = 41215. The time counting starts in 0 seconds, so,
