@@ -46,6 +46,9 @@ FOR EACH ROW
 EXECUTE PROCEDURE update_geom_column();
 ```
 
-  So, every time the IFTTT recipe adds a new file to the Google Drive sheet, this file will be included
-  in the next synchronization (depending on the period you chose, this will happen every hour, every day...).
-  And every time the table is synchronized, the_geom field will be updated. NEED TESTING
+So, every time the IFTTT recipe adds a new file to the Google Drive sheet, this file will be included
+in the next synchronization (depending on the period you chose, this will happen every hour, every day...).
+And every time the table is synchronized, the_geom field will be updated. NEED TESTING.
+
+**PROBLEM: Triggers are not allowed in CartoDB sync tables, because all the tables are deleted and recreated with each sync**
+Check https://github.com/CartoDB/cartodb/issues/1941
