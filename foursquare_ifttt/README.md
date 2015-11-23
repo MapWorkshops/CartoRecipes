@@ -52,3 +52,5 @@ And every time the table is synchronized, the_geom field will be updated. NEED T
 
 **PROBLEM: Triggers are not allowed in CartoDB sync tables, because all the tables are deleted and recreated with each sync**
 Check https://github.com/CartoDB/cartodb/issues/1941
+
+Another good idea may be using CartoDB table as **entry** for an IFTTT recipe. And transforming the CartoDB table in a RSS feed seems to be the only way, for the current time. [This app](https://github.com/andrewxhill/cartodb-rss) transforms a CartoDB table into a GeoRSS feed
