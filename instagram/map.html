@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>#ConnectionDay 2014</title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
+  <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
+  <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/3.15/themes/css/cartodb.css" />
+  <style>
+  html, body, #map {
+    height: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  </style>
+
+  <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+
+</head>
+<body>
+  <div id="map"></div>
+  <div id="torque-time"></div>
+
+  <!-- include cartodb.js library -->
+  <script src="http://libs.cartocdn.com/cartodb.js/v3/3.15/cartodb.js"></script>
+
+  <script>
+
+  /******************************************************************************
+  * openInfoWindow
+  *
+  * Function to programatically open an infowindow
+  *****************************************************************************/
+  function openInfowindow(layer, latlng, cartodb_id)
+  {
+    // Prototype: layer.trigger('featureClick', event, latlng, pos, data, layer_count)
+
+    layer.trigger('featureClick', null, latlng, null, { cartodb_id: cartodb_id }, 0);
+  }
+
+  /*****************************************************************************
+   * Main function
+   ****************************************************************************/
+   function main()
+   {
+     var data_rows = [];
+
+     var viz = cartodb.createVis('map', 'https://libregis.cartodb.com/api/v2/viz/cf423d16-93c5-11e5-9771-0ecd1babdde5/viz.json', {
+         shareable: false,
+         searchControl: false,
+         zoomControl: false,
+         loaderControl: false,
+         center_lat: 35.3668,
+         center_lon: -120.8534,
+         zoom: 12,
+         time_slider: true
+     })
+
+         .done(function(vis, layers) {
+
+             var staticLayer = layers[1];
+             var torqueLayer = layers[2];
+
+             var infowindow = staticLayer.infowindow;
+
+             map = vis.getNativeMap();
+
+             torqueLayer.stop();
+
+             // Play animation after loading all the torque tiles, but just the first time (after page load)
+             // So, we prevent the animation to start when double click, if the animation is stopped
+
+             torqueLayer.on('load', function _c() {
+                 torqueLayer.play();
+                 torqueLayer.off('load', _c);
+             });
+
+             // Get some data
+             var sql = new cartodb.SQL({user: 'libregis'});
+
+             sql.execute("SELECT cartodb_id, st_x(the_geom) as lng, st_y(the_geom) as lat from instagram_usaroadtrip order by dt")
+
+             .done(function(data) {
+                 console.log(data.rows);
+                 data_rows = data.rows;
+             })
+
+             .error(function(errors) {
+                 console.log("errors:" + errors);
+             })
+
+             torqueLayer.on('change:time', function(changes) {
+
+                 if (changes.time && !isNaN(changes.time.getTime())) {
+
+                     tt = changes.time;
+
+                     step = torqueLayer.getStep();
+
+                     // Get data rows
+                     lat = data_rows[step].lat;
+                     lng = data_rows[step].lng;
+                     cartodb_id = data_rows[step].cartodb_id;
+
+                     // Pause animation
+                     torqueLayer.pause();
+
+                     // Open the infowindow with the picture
+                     map.panTo(new L.LatLng(lat, lng));
+                     openInfowindow(staticLayer, [lat, lng], cartodb_id);
+
+                     // After a few secs, close infowindow and continue
+                     setTimeout(function() {
+                       infowindow.set('visibility', false);
+                       torqueLayer.play();
+                     }, 10000);
+                 }
+             })
+
+         })
+
+         .error(function(errors) {
+             console.log(errors);
+         });
+
+
+ }
+  window.onload = main;
+  </script>
+
+</body>
+</html>

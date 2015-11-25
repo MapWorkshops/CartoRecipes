@@ -175,12 +175,13 @@ Gallery.prototype = {
 			post.location.longitude &&
 			post.images &&
 			post.images.standard_resolution &&
-			post.images.standard_resolution.url) {
+			post.images.standard_resolution.url &&
+			post.created_time) {
 
 			// Build insert url
 			var insertQ = "insert into " +
 				this.cartodbTableName +
-				"(the_geom, name, description, image_url) values (CDB_LatLng(" +
+				"(the_geom, name, description, image_url, dt) values (CDB_LatLng(" +
 				post.location.latitude +
 				", " +
 				post.location.longitude +
@@ -190,7 +191,8 @@ Gallery.prototype = {
 				post.caption.text +
 				"', '" +
 				post.images.standard_resolution.url +
-				"')";
+				"', to_timestamp(" +
+				post.created_time + ") at time zone 'CST')";
 
 			callURL = "https://" + this.cartodbUserId + ".cartodb.com/api/v2/sql"
 
@@ -216,8 +218,8 @@ Gallery.prototype = {
 	},
 
 	finished: function() {
-		var container = document.getElementById(this.containerId);
-		container.innerHTML = '<p>' + this.postsRendered + ' images added to CartoDB table ' + this.cartodbTableName + '</p>';
-		//container.classList.add("finished");
+		//var container = document.getElementById(this.containerId);
+		//container.innerHTML = '<p>' + this.postsRendered + ' images added to CartoDB table ' + this.cartodbTableName + '</p>';
+		container.classList.add("finished");
 	}
 }
