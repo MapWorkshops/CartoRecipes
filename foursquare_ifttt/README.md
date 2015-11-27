@@ -1,6 +1,6 @@
 How to use an IFTTT recipe to put your checkins in a CartoDB map
 
-1. Enable this recipe in IFTTT. This will add, for each 4SQ checkin, a new row
+1. Enable [this](https://ifttt.com/recipes/58835-add-your-foursquare-check-ins-w-maps-to-a-spreadsheet) recipe in IFTTT. This will add, for each 4SQ checkin, a new row
 in a Google Drive sheet named IFTTT/Foursquare check-ins
 
 2. After a checkin, you can see the content of the sheet. Need a couple of modifications
