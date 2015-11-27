@@ -56,7 +56,7 @@ Check https://github.com/CartoDB/cartodb/issues/1941
 So, you'll need to manually apply this query to see your 4sq checkins in the table
 
 ```sql
-with foo as (select cartodb_id, regexp_matches(map_url, 'center=(-?[\d]*\.[\d]*),(-?[\d]*\.[\d]*)&') as coords from foursquare_checkins), bar as (select cartodb_id, coords[1] as lat, coords[2] as lng from foo) select * from bar
+with foo as (select cartodb_id, regexp_matches(map_url, 'center=(-?[\d]*\.[\d]*),(-?[\d]*\.[\d]*)&') as coords from foursquare_checkins), bar as (select cartodb_id, coords[1]::numeric as lat, coords[2]::numeric as lng from foo) update foursquare_checkins set the_geom=CDB_LatLng(lat, lng) from bar where foursquare_checkins.cartodb_id = bar.cartodb_id
 ```
 
 
