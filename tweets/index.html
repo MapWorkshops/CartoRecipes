@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>#ConnectionDay 2014</title>
+    <title>#Codemotion 2015</title>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8"/>
     <link rel="shortcut icon" href="http://cartodb.com/assets/favicon.ico" />
@@ -88,8 +88,9 @@
         }
 
         function main() {
-          cartodb.createVis('map', 'https://libregis.cartodb.com/api/v2/viz/aa3f3da8-800f-11e5-bb50-0ef7f98ade21/viz.json', {
-          //cartodb.createVis('map', 'https://libregis.cartodb.com/api/v2/viz/f30c793c-8551-11e5-a92b-0ef24382571b/viz.json'
+          cartodb.createVis('map', 'https://libregis.cartodb.com/api/v2/viz/2931385e-9510-11e5-b1db-0e31c9be1b51/viz.json', {
+          //cartodb.createVis('map', 'https://libregis.cartodb.com/api/v2/viz/aa3f3da8-800f-11e5-bb50-0ef7f98ade21/viz.json', {
+          //cartodb.createVis('map', 'https://libregis.cartodb.com/api/v2/viz/f30c793c-8551-11e5-a92b-0ef24382571b/viz.json', {
           //cartodb.createVis('map', 'http://osm2.cartodb.com/api/v2/viz/wimbledon/viz.json', {
             tiles_loader: true  // loader below the zoom control, that shows that the tiles are being loaded
           })
@@ -105,8 +106,8 @@
               var staticLayer = layers[1].getSubLayer(0);
 
               var infowindow = staticLayer.infowindow;
-              infowindow.set('template_type', 'underscore');
-              infowindow.set('template', $('#infowindow_template').html());
+              //infowindow.set('template_type', 'underscore');
+              //infowindow.set('template', $('#infowindow_template').html());
 
               var torqueLayer = layers[2];
               var tt;
