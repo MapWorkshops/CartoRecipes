@@ -92,6 +92,9 @@
           //cartodb.createVis('map', 'https://libregis.cartodb.com/api/v2/viz/aa3f3da8-800f-11e5-bb50-0ef7f98ade21/viz.json', {
           //cartodb.createVis('map', 'https://libregis.cartodb.com/api/v2/viz/f30c793c-8551-11e5-a92b-0ef24382571b/viz.json', {
           //cartodb.createVis('map', 'http://osm2.cartodb.com/api/v2/viz/wimbledon/viz.json', {
+            center_lat: 40.416775,
+            center_lon: -3.703790,
+            zoom: 9,
             tiles_loader: true  // loader below the zoom control, that shows that the tiles are being loaded
           })
 
@@ -114,12 +117,7 @@
 
               torqueLayer.stop();
 
-              // Play animation after loading all the torque tiles, but just the first time (after page load)
-              // So, we prevent the animation to start when double click, if the animation is stopped
-              torqueLayer.on('load', function _c() {
-                  torqueLayer.play();
-                  torqueLayer.off('load', _c);
-              });
+
           })
 
           .error(function(err) {
