@@ -53,4 +53,12 @@ And every time the table is synchronized, the_geom field will be updated. NEED T
 **PROBLEM: Triggers are not allowed in CartoDB sync tables, because all the tables are deleted and recreated with each sync**
 Check https://github.com/CartoDB/cartodb/issues/1941
 
+So, you'll need to manually apply this query to see your 4sq checkins in the table
+
+```sql
+with foo as (select cartodb_id, regexp_matches(map_url, 'center=(-?[\d]*\.[\d]*),(-?[\d]*\.[\d]*)&') as coords from foursquare_checkins), bar as (select cartodb_id, coords[1] as lat, coords[2] as lng from foo) select * from bar
+```
+
+
+
 Another good idea may be using CartoDB table as **entry** for an IFTTT recipe. And transforming the CartoDB table in a RSS feed seems to be the only way, for the current time. [This app](https://github.com/andrewxhill/cartodb-rss) transforms a CartoDB table into a GeoRSS feed
