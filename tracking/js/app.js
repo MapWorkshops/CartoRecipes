@@ -61,29 +61,6 @@ function buildInfoWindowContent(data) {
 
     return htmlDiv;
 
-    /*
-    // Headers
-    var htmlTable = "<table style><tr><th>Start date</th><th>End date</th><th>Start time</th><th>End time</th><th>Provider ID</th><th>Number of vehicles</th></tr>";
-
-    console.log('Data: ' + data);
-
-    // Now the rest of the elements
-    for(var i=0; i < data.length; i++) {
-        htmlTable += '<tr>';
-        htmlTable += '<td>' + data[i].start_date + '</td>';
-        htmlTable += '<td>' + data[i].end_date + '</td>';
-        htmlTable += '<td>' + data[i].start_time + '</td>';
-        htmlTable += '<td>' + data[i].end_time + '</td>';
-        htmlTable += '<td>' + data[i].providerid + '</td>';
-        htmlTable += '<td>' + data[i].number_of_vehicles + '</td>';
-        htmlTable += '</tr>';
-    }
-
-
-    htmlTable += "</table>";
-
-    return htmlTable;
-    */
 }
 
 

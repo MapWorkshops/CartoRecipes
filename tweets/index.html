@@ -94,7 +94,7 @@
           //cartodb.createVis('map', 'http://osm2.cartodb.com/api/v2/viz/wimbledon/viz.json', {
             center_lat: 40.416775,
             center_lon: -3.703790,
-            zoom: 9,
+            zoom: 5,
             tiles_loader: true  // loader below the zoom control, that shows that the tiles are being loaded
           })
 
@@ -114,10 +114,6 @@
 
               var torqueLayer = layers[2];
               var tt;
-
-              torqueLayer.stop();
-
-
           })
 
           .error(function(err) {
