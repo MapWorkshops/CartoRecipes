@@ -88,7 +88,7 @@
             // Use D3 AJAX method to query CartoDB table
             var sqlStm = "select floor(((population - 78476) * 9)  / 6411205) as population, ST_Simplify(the_geom,0.01) as the_geom from spain_adm2";
 
-            d3.json("http://libregis.cartodb.com/api/v2/sql?q=" + sqlStm + "&format=geojson&dp=5", function(collection) {
+            d3.json("http://libregis.cartodb.com/api/v2/sql?q=" + sqlStm + "&format=geojson", function(collection) {
                 svg.select("#first_layer")
                   .selectAll("path")
                     .data(collection.features)
