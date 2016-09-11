@@ -6,7 +6,6 @@ function currentEndpoint() {
     return "http://libregis.cartodb.com/api/v1/map";
 }
 
-
 function main() {
 
     // Create map
@@ -178,3 +177,6 @@ function main() {
     };
     request.send(JSON.stringify(config));
 }
+
+
+$(document).ready(main);
